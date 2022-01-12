@@ -5,6 +5,12 @@ Farm out your bare metal at the edge.
 ![image](https://user-images.githubusercontent.com/3028982/125092283-2f204d00-e09f-11eb-8fcd-56cad02fe429.png)
 
 ## Changelog
+v0.0.4 - January 11th, 2022
+```
+Added compute GPU support
+Added trex for eth ( ETHADDR=0x.. )
+```
+
 v0.0.3 - December 31st, 2021
 ```
 Added video transcode and live streaming
@@ -15,7 +21,7 @@ Added video transcode and live streaming
   - [X] Host System cap grep
   - [X] Podman rootless
   - [X] Video Transcode
-  - [ ] T-Rex Ethereum Miner by default waiting for jobs
+  - [X] T-Rex Ethereum Miner by default waiting for jobs
   - [ ] Live Streaming resolution fixes
   - [ ] Live Streaming javascript player
   - [ ] Live Streaming feed distribution for high viewer streams
@@ -105,3 +111,5 @@ COMPUTE - Allow compute jobs (default true)
 TRANSCODE - Allow transcode jobs (default true)
 LIVE - Allow live jobs if LIVE_HOST is set (default true)
 
+//Eth
+ETHADDR - Idle GPUs will mine eth using trex.
