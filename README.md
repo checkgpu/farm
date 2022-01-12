@@ -5,6 +5,11 @@ Farm out your bare metal at the edge.
 ![image](https://user-images.githubusercontent.com/3028982/125092283-2f204d00-e09f-11eb-8fcd-56cad02fe429.png)
 
 ## Changelog
+v0.0.5 - January 12th, 2022
+```
+Added auto update support
+```
+
 v0.0.4 - January 11th, 2022
 ```
 Added compute GPU support
@@ -16,66 +21,23 @@ v0.0.3 - December 31st, 2021
 Added video transcode and live streaming
 ```
 
-## Future Development
-  - [X] Auto Initialization
-  - [X] Host System cap grep
-  - [X] Podman rootless
-  - [X] Video Transcode
-  - [X] T-Rex Ethereum Miner by default waiting for jobs
-  - [ ] Live Streaming resolution fixes
-  - [ ] Live Streaming javascript player
-  - [ ] Live Streaming feed distribution for high viewer streams
-  - [ ] Speed Test
-  - [ ] Networking DHCP
-  - [ ] Networking Static IP
-  - [ ] Offchain SEV attestor
-  - [ ] Offchain attestation queue
-  - [ ] SGX podman
+## Introduction to Compute
+The Zod Farm runs any code that can be containerized. You are not restricted to running WASM binaries or other derivatives. Using GPUs you have the following caps `NVIDIA_DRIVER_CAPABILITIES=utility,compute,graphics,video`, let us know if your usecase requires the `display` cap.
   
 ## Status
+  - [X] live streaming (ffmpeg) can be ingested. (basic features)
+  - [ ] live streaming recording
+  - [ ] live streaming advanced features
+  - [X] transcode (ffmpeg) jobs can be created.
   - [X] docker (podman) jobs can be created.
   - [ ] encrypted_vm (AMD SEV) jobs are not supported yet.
   - [ ] encrypted_container (SGX) jobs are not supported yet.
-
-## Introduction
-Farm allows you to harvest yields from your metal, whether you have a few systems lying around untapped or operate at fullscale.
-
-It does this by giving you a price for CPU, Ram, Disk and GPU from users on the Zod EDGE.
-
-Think of running your farm as connecting your metal to a giant supercompute cluster, where you get a yield for liquidity that that metal provides.
-
-Farm has 2 modes of operation; confidential and plaintext.
-  - AMD EPYC provides confidential VMs 🔒
-  - Intel SGX confidential mode is not ready yet 🕑
-  - All other processors provide plaintext sandbox mode 📄
-
-The value of your farm is dependent upon:
-  - Total uplink bandwith (1Gbe recommended) (many states now offer 10Gbe fiber for 200$ a month https://www.utopiafiber.com/10g-info/)
-  - CPU Type (EPYCs 7xx3 Milan most valuable ATM, this will level out as more CPUs support confidential compute)
-  - Total CPUs and Ram
-  - Total GPUs (for jobs that require GPUs)
-  - Only NVIDIA Gpu is supported.
-  - Location Location Location (GPUs at the edge in South Korea are more valuable then those same GPUs in Kyrgyzstan)
 
 ## How to join the edge
 Visit https://transcode.zod.tv/clusterfarm and click `View Farm Key` to get your current NEAR access key secret_key + your near account set as envvars.  You need to login with your NEAR wallet at transcode.zod.tv to be issued a NEAR access key, allowance on NEAR access keys is 0.25 NEAR, so if this key were to get compromised, you can lose at most 0.25 NEAR. If you lose the key you should revoke it at wallet.near.org.
 
 ## System Prep
-To provide NVIDIA Gpus, you need NVIDIA drivers + CUDA + nvidia-smi.  
-  
-To provide transcode jobs, all included bits are in the farm binary.  
-
-To provide live streaming, all included bits are in the farm binary.  
-
-To provide rootless containers (docker basically) you need to have podman, slirp4netns, fuse-overlayfs installed.  
-
-You also need to allow cgroupsv2 to set a cpu quota, by default this is not enabled on every distro.
-```
-sudo mkdir -p /etc/systemd/system/user@.service.d/
-echo -e '[Service]\\nDelegate=memory pids cpu cpuset io' | sudo tee -a /etc/systemd/system/user@.service.d/delegate.conf
-//and reboot
-```
-The AUTO=true envvar will make farm complete the setup steps automatically but only on Ubuntu 22.04.
+Visit https://github.com/zodtv/farm_image specifically `Installing ontop of existing Ubuntu` section.
 
 ## Environmental Variables
 
@@ -86,7 +48,6 @@ NEAR_ACCOUNT - Your NEAR account
 
 //Farm
 WORKFOLDER - Path to store misc items, disk images and non podman storage (default ~/.cache/zod)
-AUTO - Auto setup your system if using Ubuntu 22.04+ true | false | null (default null)
 LOG_LEVEL - How verbose to log 1 | 2 | 3 (default 1)
 
 //Video
@@ -111,5 +72,32 @@ COMPUTE - Allow compute jobs (default true)
 TRANSCODE - Allow transcode jobs (default true)
 LIVE - Allow live jobs if LIVE_HOST is set (default true)
 
+//Auto Update
+UPDATE - Set the autoupdate mode. (default pull)
+  "none" means ignore auto updates.
+  "pull" downloads+overrides latest farm without restarting. 
+  "exit" exits farm after doing pull.
+
 //Eth
 ETHADDR - Idle GPUs will mine eth using trex.
+```
+
+## Misc
+Farm allows you to harvest yields from your metal, whether you have a few systems lying around untapped or operate at fullscale.
+
+It does this by giving you a price for CPU, Ram, Disk and GPU from users on the Zod EDGE.
+
+Think of running your farm as connecting your metal to a giant supercompute cluster, where you get a yield for compute.
+
+Farm has 2 modes of operation; confidential and plaintext.
+  - AMD EPYC provides confidential VMs 🔒 (not ready)
+  - Intel SGX confidential mode for containers 🕑 (not ready)
+  - All other processors provide plaintext sandbox mode 📄
+
+The value of your farm is dependent upon:
+  - Total uplink bandwith (1Gbe recommended) (many states now offer 10Gbe fiber for 200$ a month https://www.utopiafiber.com/10g-info/)
+  - CPU Type (EPYCs 7xx3 Milan or Modern XEONs will be more valuable later due to confidential compute support)
+  - Total CPUs and Ram
+  - Total NVIDIA GPUs
+  - Only NVIDIA GPU is supported.
+  - Location Location Location (GPUs at the edge in South Korea are more valuable then those same GPUs in Kyrgyzstan)
