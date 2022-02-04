@@ -5,6 +5,17 @@ Farm out your bare metal at the edge.
 ![image](https://user-images.githubusercontent.com/3028982/125092283-2f204d00-e09f-11eb-8fcd-56cad02fe429.png)
 
 ## Changelog
+v0.0.6 - February 3rd, 2022
+```
+Added better NVENC support detection
+Fix cgroupsv2 detection
+Fix Tesla GPU detection
+Fix estimated price calculation
+Add GPU price table support
+Add Podman Args
+Require kernel 5.11 now
+```
+
 v0.0.5 - January 12th, 2022
 ```
 Added auto update support
