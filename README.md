@@ -5,6 +5,11 @@ Farm out your bare metal at the edge.
 ![image](https://user-images.githubusercontent.com/3028982/125092283-2f204d00-e09f-11eb-8fcd-56cad02fe429.png)
 
 ## Changelog
+v0.0.7 - February 9rd, 2022
+```
+IPFS support
+```
+
 v0.0.6 - February 3rd, 2022
 ```
 Added better NVENC support detection
@@ -35,14 +40,17 @@ Added video transcode and live streaming
 ## Introduction to Compute
 The Zod Farm runs any code that can be containerized. You are not restricted to running WASM binaries or other derivatives. Using GPUs you have the following caps `NVIDIA_DRIVER_CAPABILITIES=utility,compute,graphics,video`, let us know if your usecase requires the `display` cap.
   
-## Status
-  - [X] live streaming (ffmpeg) can be ingested. (basic features)
+## Features
+  - [X] IPFS (sandboxed API exposed on http://127.0.0.1:50001/ inside container)
+  - [X] docker containers /w GPU (podman)
+  - [X] transcode video (ffmpeg)
+  - [X] live streaming (basic features)
   - [ ] live streaming recording
-  - [ ] live streaming advanced features
-  - [X] transcode (ffmpeg) jobs can be created.
-  - [X] docker (podman) jobs can be created.
   - [ ] encrypted_vm (AMD SEV) jobs are not supported yet.
   - [ ] encrypted_container (SGX) jobs are not supported yet.
+
+## How to run jobs on the edge
+Visit https://github.com/zodtv/examples to see examples of running workloads like blender, machine learning, and more.  
 
 ## How to join the edge
 Visit https://transcode.zod.tv/clusterfarm and click `View Farm Key` to get your current NEAR access key secret_key + your near account set as envvars.  You need to login with your NEAR wallet at transcode.zod.tv to be issued a NEAR access key, allowance on NEAR access keys is 0.25 NEAR, so if this key were to get compromised, you can lose at most 0.25 NEAR. If you lose the key you should revoke it at wallet.near.org.
@@ -60,6 +68,9 @@ NEAR_ACCOUNT - Your NEAR account
 //Farm
 WORKFOLDER - Path to store misc items, disk images and non podman storage (default ~/.cache/zod)
 LOG_LEVEL - How verbose to log 1 | 2 | 3 (default 1)
+
+//IPFS
+IPFS_IPPORT - Location of IPFS API (default http://127.0.0.1:5001)
 
 //Video
 VIDEOFOLDER - Path to store video transcode jobs (default /tmp/vid)
@@ -82,6 +93,7 @@ LIVE_SSL_KEY - SSL Key for SSL Cert (default null)
 COMPUTE - Allow compute jobs (default true)
 TRANSCODE - Allow transcode jobs (default true)
 LIVE - Allow live jobs if LIVE_HOST is set (default true)
+IPFS - Allow IPFS interaction (default true)
 
 //Auto Update
 UPDATE - Set the autoupdate mode. (default pull)
