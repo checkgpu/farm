@@ -49,6 +49,16 @@ The Zod Farm runs any code that can be containerized. You are not restricted to 
   - [ ] encrypted_vm (AMD SEV) jobs are not supported yet.
   - [ ] encrypted_container (SGX) jobs are not supported yet.
 
+## IPFS
+IPFS is exposed inside the container as a unix domain socket at `/ipfs`.  
+```
+#Download a file from IPFS
+curl -s --unix-socket /ipfs -X POST "http://dontcare/api/v0/cat?arg=QmYhEsVWdzbCU49XE8F9ybKKAPQHjhfhekoMn4Xvz857rD" --output source.blend
+
+#Upload a file to IPFS and get gateway URL
+curl -s --unix-socket /ipfs -X POST http://dontcare/api/v0/add -F 'file=@out.png' | jq -r '.Hash' | awk '{print "https://cloudflare-ipfs.com/ipfs/"$1}'
+```
+
 ## How to run jobs on the edge
 Visit https://github.com/zodtv/examples to see examples of running workloads like blender, machine learning, and more.  
 
