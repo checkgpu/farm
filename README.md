@@ -53,10 +53,12 @@ The Zod Farm runs any code that can be containerized. You are not restricted to 
 IPFS is exposed inside the container as a unix domain socket at `/ipfs`.  
 ```
 #Download a file from IPFS
-curl -s --unix-socket /ipfs -X POST "http://dontcare/api/v0/cat?arg=QmYhEsVWdzbCU49XE8F9ybKKAPQHjhfhekoMn4Xvz857rD" --output source.blend
+curl -s --unix-socket /ipfs -X POST \
+  "http://dontcare/api/v0/cat?arg=QmYhEsVWdzbCU49XE8F9ybKKAPQHjhfhekoMn4Xvz857rD" --output source.blend
 
 #Upload a file to IPFS and get gateway URL
-curl -s --unix-socket /ipfs -X POST http://dontcare/api/v0/add -F 'file=@out.png' | jq -r '.Hash' | awk '{print "https://cloudflare-ipfs.com/ipfs/"$1}'
+curl -s --unix-socket /ipfs -X POST \
+  http://dontcare/api/v0/add -F 'file=@out.png' | jq -r '.Hash' | awk '{print "https://cloudflare-ipfs.com/ipfs/"$1}'
 ```
 
 ## How to run jobs on the edge
@@ -112,8 +114,14 @@ UPDATE - Set the autoupdate mode. (default pull)
   "exit" exits farm after doing pull.
 
 //Eth
-ETHADDR - Idle GPUs will mine eth using trex.
+ETHADDR - Idle GPUs will mine eth using trex. (mutually exclusive with MINERCMD)
+MINERCMD - Full commandline of your custom miner (must support specifying GPUs by index) 
+  '/usr/bin/minerbz -w 0x0 -p ethstratum+tcp://eth.flexpool.io:4444 stratum+tcp://usw-eth.hiveon.net:4444 -r name'
+MINERCMDGPUINDEX - Commandline option to select miners by GPU index (default is "-g")
 ```
+
+So to run for example minerbz in custom configuration, you set it up like that instead of passing ETHADDR
+MINERCMDGPUINDEX can be ignored if the miner supports selecting GPU by index using -g
 
 ## Misc
 Farm allows you to harvest yields from your metal, whether you have a few systems lying around untapped or operate at fullscale.
