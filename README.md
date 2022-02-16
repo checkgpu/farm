@@ -96,6 +96,7 @@ MAX_TRANSCODE_JOBS_PER_GPU - Max concurrent transcode jobs per GPU (default 2)
 //port 80 for simplicity. Cloudflare proxy mode will handle the SSL
 //automatically via LetsEncrypt.
 LIVE_HOST - DNS name to access your farm publicly (default null)
+LIVE_IPV4 - IP interface/alias to bind on (default "0.0.0.0")
 LIVE_PORT - Port (default 80)
 LIVE_SSL_PORT - SSL Port (default 443)
 LIVE_SSL_CERT - SSL Cert valid for DNS of LIVE_HOST (default null)
